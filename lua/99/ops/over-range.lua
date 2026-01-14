@@ -41,7 +41,7 @@ local function over_range(context, range, prompt)
         request:cancel()
     end)
 
-    local full_prompt = context._99.prompts.prompts.visual_selection(range)
+    local full_prompt = context._99.prompts.prompts.visual_selection(range, context)
     if prompt then
         full_prompt = context._99.prompts.prompts.prompt(prompt, full_prompt)
     end
@@ -78,7 +78,12 @@ local function over_range(context, range, prompt)
                 --- HACK: i am adding a new line here because above range will add a mark to the line above.
                 --- that way this appears to be added to "the same line" as the visual selection was
                 --- originally take from
-                table.insert(lines, 1, "")
+                ---
+                --- If the selection is on the first line, we don't want to add a new line
+                --- because the mark is already at the beginning of the file.
+                if new_range.start.row > 1 or new_range.start.col > 1 then
+                    table.insert(lines, 1, "")
+                end
 
                 new_range:replace_text(lines)
             end
