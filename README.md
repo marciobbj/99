@@ -91,23 +91,13 @@ I make the assumption you are using Lazy
 Focused on software engineering tasks. It expects code context and provides canonical, robust implementations.
 
 ### Writer's Assistant
-Designed for text editing, correction, and creative writing. It acts as a professional editor to improve clarity, flow, and grammar.
+Designed for text editing, correction, and creative writing. It acts as a professional editor to improve clarity, flow, and grammar. It checks the `:set spelllang` of your current buffer. If no spelllang is set, it falls back to your system's `$LANG`. Also, you can override this with `:lua require("99").set_writer_language("pt-BR")`.
 
-#### Intelligent Language Detection
-In **Writer Mode**, 99 intelligently detects the language you are working in:
-1. **Buffer Level**: It checks the `:set spelllang` of your current buffer.
-2. **System Level**: If no spelllang is set, it falls back to your system's `$LANG`.
-3. **Manual**: You can override this with `:lua require("99").set_writer_language("pt-BR")`.
-
+### Toggle between modes
 To switch modes, use `require("99").toggle_mode()` or `require("99").set_mode("writer")`.
 
 ## Model Selection
-You can dynamically change the model being used by 99. By default, it uses `opencode/claude-sonnet-4-5`.
-
-To see a list of available models and pick one:
-`:lua require("99").select_model()`
-
-This will query `opencode` for all available models and present them using `vim.ui.select`.
+You can dynamically change the model being used by 99. By default, it uses `opencode/claude-sonnet-4-5`. To see a list of available models and pick one: `:lua require("99").select_model()`.This will query `opencode` for all available models and present them using `vim.ui.select`.
 
 ## API
 You can see the full api at [99 API](./lua/99/init.lua)
