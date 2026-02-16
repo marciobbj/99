@@ -390,6 +390,50 @@ function _99.select_model()
         end
 
         vim.schedule(function()
+            if vim.fn.executable("fzf") == 1 then
+                local input_file = os.tmpname()
+                local output_file = os.tmpname()
+
+                local f = io.open(input_file, "w")
+                if f then
+                    for _, m in ipairs(models) do
+                        f:write(m .. "\n")
+                    end
+                    f:close()
+                end
+
+                local win, _ = Window.create_centered_window()
+                vim.api.nvim_buf_set_name(win.buf_id, "99-model-selector")
+
+                vim.fn.termopen(
+                    string.format(
+                        "FZF_DEFAULT_OPTS='' fzf --reverse --no-preview --prompt='Model > ' < %s > %s",
+                        input_file,
+                        output_file
+                    ),
+                    {
+                        on_exit = function(_, code)
+                            Window.clear_active_popups()
+                            if code == 0 then
+                                local out_f = io.open(output_file, "r")
+                                if out_f then
+                                    local choice = out_f:read("*l")
+                                    out_f:close()
+                                    if choice and choice ~= "" then
+                                        _99.set_model(choice)
+                                        vim.notify("99 Model set to: " .. choice)
+                                    end
+                                end
+                            end
+                            os.remove(input_file)
+                            os.remove(output_file)
+                        end,
+                    }
+                )
+                vim.cmd("startinsert")
+                return
+            end
+
             -- We avoid using vim.ui.select if there are many models because some UI plugins (like snacks.nvim)
             -- have bugs with large lists (integral height error).
             -- Instead, we'll use a custom buffer-based picker if the list is large,
