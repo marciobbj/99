@@ -17,7 +17,7 @@ local function get_lang(context)
     return context._99.writer_language or "en"
 end
 
-local function create_prompts(role_text, visual_text, completion_text, implement_text)
+local function create_prompts(role_text, visual_text, implement_text)
     local function resolve(val, ...)
         if type(val) == "function" then
             return val(...)
@@ -28,9 +28,6 @@ local function create_prompts(role_text, visual_text, completion_text, implement
     return {
         role = function(context)
             return resolve(role_text, get_lang(context))
-        end,
-        fill_in_function = function(context)
-            return resolve(completion_text, get_lang(context))
         end,
         implement_function = function(context)
             return resolve(implement_text, get_lang(context))
@@ -87,14 +84,6 @@ end
 local code_prompts = create_prompts(
     "You are a software engineering assistant mean to create robust and conanical code",
     "You receive a selection in neovim that you need to replace with new code.\nThe selection's contents may contain notes, incorporate the notes every time if there are some.\nconsider the context of the selection and what you are suppose to be implementing",
-    [[
-You have been given a function change.
-Create the contents of the function.
-If the function already contains contents, use those as context
-Check the contents of the file you are in for any helper functions or context
-
-if there are DIRECTIONS, follow those when changing this function.  Do not deviate
-]],
     "You have been given a function call.  Implement the function that is being called"
 )
 
@@ -104,17 +93,6 @@ local writer_prompts = create_prompts(
     end,
     function(lang)
         return string.format("You receive a selection of text in neovim (language: %s) that you need to improve or edit. If this is a poem, ensure the rhymes remain intact.\nThe selection's contents may contain notes, incorporate the notes every time if there are some.\nconsider the context of the selection and what you are suppose to be improving", lang)
-    end,
-    function(lang)
-        return string.format([[
-You have been given a text completion task in %s.
-Improve and complete the text based on the surrounding context.
-If the text already contains contents, use those as context.
-
-If the text appears to be a POEM or has a rhythmic/rhyming structure, you MUST preserve the rhyme scheme and meter while improving the vocabulary or flow.
-
-if there are DIRECTIONS, follow those when changing this text. Do not deviate.
-]], lang)
     end,
     function(lang)
         return string.format("You have been given a reference or a title in %s. Write a paragraph or section about it.", lang)

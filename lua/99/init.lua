@@ -204,27 +204,6 @@ function _99.set_writer_language(lang)
     print("Writer language set to: " .. lang)
 end
 
-function _99.fill_in_function_prompt()
-    local context = get_context("fill-in-function-with-prompt")
-    context.logger:debug("start")
-    Window.capture_input(function(success, response)
-        context.logger:debug(
-            "capture_prompt",
-            "success",
-            success,
-            "response",
-            response
-        )
-        if success then
-            ops.fill_in_function(context, response)
-        end
-    end, {})
-end
-
-function _99.fill_in_function()
-    ops.fill_in_function(get_context("fill_in_function"))
-end
-
 function _99.visual_prompt()
     local context = get_context("over-range-with-prompt")
     context.logger:debug("start")

@@ -46,9 +46,6 @@ I make the assumption you are using Lazy
 			})
 
             -- Create your own short cuts for the different types of actions
-			vim.keymap.set("n", "<leader>9f", function()
-				_99.fill_in_function()
-			end)
             -- take extra note that i have visual selection only in v mode
             -- technically whatever your last visual selection is, will be used
             -- so i have this set to visual mode so i dont screw up and use an
@@ -148,7 +145,7 @@ Then the virtual text will be displayed one line below "function" instead of fir
 * visual selection sends the whole file.  there is likely a better way to use
   treesitter to make the selection of the content being sent more sensible.
 
-* for both fill in function and visual there should be a better way to gather
+* for visual there should be a better way to gather
 context.  I think that treesitter + lsp could be really powerful.  I am going
 to experiment with this more once i get access to the FIM models.  This could
 make the time to completion less than a couple seconds, which would be
