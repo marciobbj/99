@@ -94,7 +94,7 @@ Designed for text editing, correction, and creative writing. It acts as a profes
 To switch modes, use `require("99").toggle_mode()` or `require("99").set_mode("writer")`.
 
 ## Model Selection
-You can dynamically change the model being used by 99. By default, it uses `opencode/claude-sonnet-4-5`. To see a list of available models and pick one: `:lua require("99").select_model()`.This will query `opencode` for all available models and present them using `vim.ui.select`.
+You can dynamically change the model being used by 99. By default, it uses `copilot/gpt-5-mini`. To see a list of available models and pick one: `:lua require("99").select_model()`.This will query `opencode` for all available models and present them using `vim.ui.select`.
 
 ## API
 You can see the full api at [99 API](./lua/99/init.lua)

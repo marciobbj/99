@@ -40,7 +40,7 @@ end
 local function create_99_state()
     local prompt_settings = require("99.prompt-settings")
     return {
-        model = "opencode/claude-sonnet-4-5",
+        model = "copilot/gpt-5-mini",
         md_files = {},
         prompt_settings = prompt_settings,
         prompts = {
